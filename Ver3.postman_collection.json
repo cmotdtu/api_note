@@ -1,0 +1,1052 @@
+{
+	"info": {
+		"_postman_id": "3be26265-14a8-4ec7-aea2-ed4c6333618f",
+		"name": "Ver3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42894625"
+	},
+	"item": [
+		{
+			"name": "Dang Ky",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"quocdatforworkv2@gmail.com\",\r\n    \"display_name\": \"Nguyễn Quốc Đạt\",\r\n    \"password\": \"quocdatforworkv2@gmail.com\",\r\n    \"password_confirmation\": \"quocdatforworkv2@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/note_management/api/register.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"register.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dang nhap",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"quocdat51930@gmail.com\",\r\n    \"password\": \"quocdat51930@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/note_management/api/login.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"login.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Quen Mat Khau",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"quocdatforworkv2@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/note_management/api/password_reset.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"password_reset.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dang xuat",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/note_management/api/logout.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"logout.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Them ghi chu",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "them moi",
+							"type": "text"
+						},
+						{
+							"key": "content",
+							"value": "content",
+							"type": "text"
+						},
+						{
+							"key": "is_pinned",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "category",
+							"value": "category",
+							"type": "text"
+						},
+						{
+							"key": "tags",
+							"value": "testtttttt,jkni,jknp\n",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "images[]",
+							"type": "file",
+							"src": [
+								"postman-cloud:///1effa9c0-33b8-4810-9566-52b35c7daaab",
+								"/C:/Users/quocd/Downloads/Untitled-2025-01-31-1245.png",
+								"/C:/Users/quocd/Downloads/đotongquat.png",
+								"/C:/Users/quocd/Downloads/all.drawio.png"
+							]
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/note_management/api/notes.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"notes.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cap nhat ghi chu",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "note_id",
+							"value": "45",
+							"type": "text"
+						},
+						{
+							"key": "title",
+							"value": "newnewnew",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/note_management/api/update_note.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"update_note.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Xoa Ghi Chu",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"note_id\": 47\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/note_management/api/delete_note.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"delete_note.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Chia se ghi chu",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"note_id\": 42,\r\n    \"recipients\": [\"quocdat51930@gmail.com\"],\r\n    \"permission\": \"edit\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/note_management/api/share_note.php?action=share_note",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"share_note.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "share_note"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Xem Ghi Chu Kem Password",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/note_management/api/notes.php?action=view_note&note_id=42&password=123456",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"notes.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "view_note"
+						},
+						{
+							"key": "note_id",
+							"value": "42"
+						},
+						{
+							"key": "password",
+							"value": "123456"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Xem Ghi Chu Chia Se",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/note_management/api/view_note.php?note_id=42&access_password=60a81265d6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"view_note.php"
+					],
+					"query": [
+						{
+							"key": "note_id",
+							"value": "42"
+						},
+						{
+							"key": "access_password",
+							"value": "60a81265d6"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cap Nhat Ghi Chu",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "note_id",
+							"value": "48",
+							"type": "text"
+						},
+						{
+							"key": "title",
+							"value": "oeiow",
+							"type": "text"
+						},
+						{
+							"key": "images[]",
+							"type": "file",
+							"src": [
+								"postman-cloud:///1effa9c0-33b8-4810-9566-52b35c7daaab",
+								"/C:/Users/quocd/Downloads/1.png",
+								"/C:/Users/quocd/Downloads/2.png",
+								"/C:/Users/quocd/Downloads/3.jpg"
+							]
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/note_management/api/update_note.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"update_note.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gui Mail Quen Mat Khau",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"quocdat51930@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/note_management/api/password_reset.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"password_reset.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Xem Ghi Chu By Id_User",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/note_management/api/get_notes.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"get_notes.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Chinh su By Id_User",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"display_name\": \"Nguyễn Quốc Đạt\",\r\n    \"preferences\":\"1h\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/note_management/api/edit_user.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"edit_user.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tai anh user By Id_User",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/quocd/Downloads/ctr.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/note_management/api/upload_img.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"upload_img.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Lay Tat Ca Ghi Chu",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/note_management/api/notes.php?action=view_notes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"notes.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "view_notes"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Xem Dashboard TK chua Active",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/note_management/api/dashboard.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"dashboard.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Them Tag Moi",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Tag mới thêm nè\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/note_management/api/tags.php?action=add_tag",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"tags.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "add_tag"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cap Nhat Tag",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"tag_id\": \"28\",\r\n  \"new_name\": \"Nhãn , h\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/note_management/api/tags.php?action=rename_tag",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"tags.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "rename_tag"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Xem Tat Ca Cac Tag",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/note_management/api/tags.php?action=list_tags",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"tags.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "list_tags"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filter notes by tag Id",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/note_management/api/tags.php?action=filter_notes_by_tag&tag_id=17",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"tags.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "filter_notes_by_tag"
+						},
+						{
+							"key": "tag_id",
+							"value": "17"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Xoa tag theo id",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"tag_id\": \"20\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/note_management/api/tags.php?action=delete_tag",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"tags.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "delete_tag"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Doi Password Note",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"note_id\": 43,\r\n    \"current_password\":\"\",\r\n    \"new_password\": \"testthyu\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/note_management/api/notes.php?action=change_password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"notes.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "change_password"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tat Password Note",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"note_id\": 48\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/note_management/api/notes.php?action=disable_password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"notes.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "disable_password"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Lay Ghi Chu By Tag Name",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/note_management/api/get_notes_by_tag.php?tag=testtttttt",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"get_notes_by_tag.php"
+					],
+					"query": [
+						{
+							"key": "tag",
+							"value": "testtttttt"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Lay share note bang email login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/note_management/api/share_note.php?action=get_shared_notes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"share_note.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "get_shared_notes"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sua quyen truy cap",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"shared_note_id\" : 38,\r\n    \"id\": 20,\r\n    \"permission\":\"edit\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/note_management/api/share_note.php?action=edit_shared_note",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"share_note.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "edit_shared_note"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Thu hoi quyen truy cap",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \"id\": 2,\r\n    \"shared_note_id\" : 41\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/note_management/api/share_note.php?action=delete_shared_note",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"share_note.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "delete_shared_note"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Lay lich su voi ngdung hientai",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/note_management/api/notes.php?action=get_note_history",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"notes.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "get_note_history"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Lay lich su chinh sua note",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"note_id\": 40\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/note_management/api/notes.php?action=get_note_history_by_id&note_id=40",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"note_management",
+						"api",
+						"notes.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "get_note_history_by_id"
+						},
+						{
+							"key": "note_id",
+							"value": "40"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghi Chú Thời Gian Thực</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        #input-pass {
+            width: 300px;
+            /* Đặt chiều rộng nhỏ hơn */
+            margin: 100px auto;
+            /* Căn giữa theo chiều ngang và cách trên 100px */
+            text-align: center;
+            /* Căn giữa nội dung bên trong */
+        }
+
+        #input-pass .form-label {
+            font-size: 14px;
+            /* Giảm kích thước chữ */
+        }
+
+        #input-pass input {
+            font-size: 14px;
+            /* Giảm kích thước input */
+            padding: 6px;
+        }
+
+        #input-pass button {
+            font-size: 14px;
+            /* Giảm kích thước nút */
+            padding: 8px;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">📌 Ghi chú thời gian thực</h2>
+
+        <div class="card p-4 shadow" id="input-pass">
+            <div class="mb-3">
+                <label for="password" class="form-label">🔑 Nhập Password:</label>
+                <input type="text" id="password" class="form-control">
+            </div>
+            <button class="btn btn-primary w-100" onclick="fetchNote()">🔍 Xem Ghi Chú</button>
+
+            <button class="btn btn-success w-100 mt-5" onclick="fetchNotePerson()">🔍 Xem Ghi Chú Cá nhân</button>
+
+        </div>
+
+        <input type="hidden" id="note-id">
+
+        <div id="notes-container" class="mt-4" style="display: none;">
+            <div class="row">
+                <div class="col-12 col-md-4">
+                    <div class="card p-4 shadow">
+                        <h3 id="note-title" class="text-primary">📝 Ghi chú: Không có tiêu đề</h3>
+                        <p id="note-edit"></p>
+                        <p><strong>📂 Thể loại:</strong> <span id="note-category">Không có</span></p>
+                        <p><strong>🏷️ Tags:</strong> <span id="note-tags">Không có</span></p>
+                        <p><strong>📅 Ngày tạo:</strong> <span id="note-created">Không rõ</span></p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-8">
+                    <div class="card p-4 shadow">
+                        <div class="mt-3">
+                            <button id="edit-button" class="btn btn-warning" onclick="toggleEdit()">✏️ Chỉnh
+                                sửa</button>
+                            <button id="save-button" class="btn btn-success" onclick="saveEdit()"
+                                style="display: none;">💾
+                                Lưu</button>
+                        </div>
+                        <textarea id="note-content" class="form-control mt-2" rows="4"
+                            readonly>Chưa có nội dung</textarea>
+                        <h1>Ảnh đính kèm</h1>
+                        <div id="image-container" class="row mt-3"></div> <!-- Chỗ để hiển thị ảnh -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script>
+        const socket = io('http://localhost:3000');
+        let isEditing = false;
+
+        function fetchNote() {
+            const noteId = document.getElementById('note-id').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (!noteId) {
+                alert("Vui lòng nhập Note ID!");
+                return;
+            }
+
+            socket.emit('request_note', { noteId, password });
+
+        }
+
+        function fetchNotePerson() {
+            const noteId = document.getElementById('note-id').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (!noteId) {
+                alert("Vui lòng nhập Note ID!");
+                return;
+            }
+
+
+            socket.emit('request_note_person', { noteId, password });
+        }
+
+
+
+
+        socket.on('load_note', (noteData) => {
+            console.log("📜 Dữ liệu ghi chú nhận được:", noteData);
+
+            if (!noteData || typeof noteData !== 'object') {
+                document.getElementById('note-content').value = "Lỗi dữ liệu!";
+                return;
+            }
+
+            if (noteData.permission == 'edit') {
+                document.getElementById('note-edit').innerHTML = "✏️<strong>Được phép edit</strong>";
+            } else {
+                document.getElementById('note-edit').innerHTML = "👁️ <strong>Chỉ được phép đọc</strong>";
+                document.getElementById("edit-button").style.visibility = "hidden";
+            }
+
+            if (noteData && noteData.message) {
+                const mess = noteData.message.trim();
+                alert(mess);
+
+                if (noteData.error || mess === "Mật khẩu không đúng hoặc ghi chú không tồn tại.jhjj") {
+                    document.getElementById('input-pass').style.display = "block";
+                    document.getElementById('notes-container').style.display = "none";
+
+                } else {
+                    document.getElementById('notes-container').style.display = "block";
+                    document.getElementById('input-pass').style.display = "none";
+                }
+            }
+
+
+
+            document.getElementById('note-title').innerText = `📝 Ghi chú: ${noteData.title || "Không có tiêu đề"}`;
+            document.getElementById('note-content').value = noteData.content || "Không có nội dung";
+            document.getElementById('note-category').innerText = noteData.category || "Không có";
+            document.getElementById('note-tags').innerText = noteData.tags || "Không có";
+            document.getElementById('note-created').innerText = noteData.created_at || "Không rõ";
+
+            const imageContainer = document.getElementById("image-container");
+            imageContainer.innerHTML = ""; // Xóa ảnh cũ trước khi hiển thị ảnh mới
+
+            try {
+                let images = noteData.image;
+                if (typeof images === 'string') {
+                    images = JSON.parse(images);
+                }
+
+                console.log("📸 Danh sách ảnh:", images);
+
+                if (Array.isArray(images) && images.length > 0) {
+                    images.forEach(imgSrc => {
+                        if (imgSrc) {
+                            const imgElement = document.createElement("img");
+                            imgElement.src = `http://localhost/note_management/api/${imgSrc}`;
+                            imgElement.classList.add("img-fluid", "rounded", "shadow-sm");
+                            imgElement.style.width = "100%";
+                            imgElement.style.marginBottom = "10px";
+
+                            const col = document.createElement("div");
+                            col.classList.add("col-md-3");
+                            col.appendChild(imgElement);
+                            imageContainer.appendChild(col);
+                        }
+                    });
+                } else {
+                    imageContainer.innerHTML = "<p class='text-muted'>Không có ảnh</p>";
+                }
+            } catch (error) {
+                console.error("❌ Lỗi khi xử lý ảnh:", error);
+                imageContainer.innerHTML = "<p class='text-danger'>Lỗi khi tải ảnh</p>";
+            }
+        });
+
+        function toggleEdit() {
+            const textArea = document.getElementById('note-content');
+            const editButton = document.getElementById('edit-button');
+            const saveButton = document.getElementById('save-button');
+
+            if (!isEditing) {
+                textArea.removeAttribute('readonly');
+                textArea.focus();
+                editButton.style.display = 'none';
+                saveButton.style.display = 'inline-block';
+                isEditing = true;
+            }
+        }
+
+        function saveEdit() {
+            const noteId = document.getElementById('note-id').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const content = document.getElementById('note-content').value.trim();
+
+            if (!noteId || !password) {
+                alert("Thiếu thông tin để lưu!");
+                return;
+            }
+
+            socket.emit('edit_note', { noteId, password, content });
+
+            document.getElementById('note-content').setAttribute('readonly', true);
+            document.getElementById('edit-button').style.display = 'inline-block';
+            document.getElementById('save-button').style.display = 'none';
+            isEditing = false;
+        }
+
+        socket.on('note_updated', (data) => {
+            if (data.noteId === document.getElementById('note-id').value.trim()) {
+                document.getElementById('note-content').value = data.content;
+            }
+        });
+
+        const params = new URLSearchParams(window.location.search);
+        const note_id = params.get("note_id");
+
+        if (note_id) {
+            document.getElementById("note-id").value = note_id;
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

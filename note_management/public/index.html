@@ -37,9 +37,15 @@
 
 <body class="bg-light">
     <div class="container mt-4">
-        <h2 class="text-center mb-4">📌 Ghi chú thời gian thực</h2>
+        <h3 id="status" style="display: none;"></h3>
 
+        <h2 class="text-center mb-4">📌 Ghi chú thời gian thực</h2>
+        <div class="mb-3">
+            <input type="text" id="searchs" placeholder="Tìm kiếm ghi chú..."  class="form-control">
+            <div id="results"></div>
+        </div>
         <div class="card p-4 shadow" id="input-pass">
+
             <div class="mb-3">
                 <label for="password" class="form-label">🔑 Nhập Password:</label>
                 <input type="text" id="password" class="form-control">
@@ -56,7 +62,7 @@
             <div class="row">
                 <div class="col-12 col-md-4">
                     <div class="card p-4 shadow">
-                        <h3 id="note-title" class="text-primary">📝 Ghi chú: Không có tiêu đề</h3>
+                        <h3 id="note-title">📝 Ghi chú: Không có tiêu đề</h3>
                         <p id="note-edit"></p>
                         <p><strong>📂 Thể loại:</strong> <span id="note-category">Không có</span></p>
                         <p><strong>🏷️ Tags:</strong> <span id="note-tags">Không có</span></p>
@@ -84,6 +90,7 @@
     </div>
 
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const socket = io('http://localhost:3000');
         let isEditing = false;
@@ -147,7 +154,8 @@
             }
 
 
-
+            document.getElementById("note-title").style.color = noteData.note_color;
+            document.getElementById("note-title").style.fontSize = noteData.font_size; // Thay đổi màu chữ thành đỏ
             document.getElementById('note-title').innerText = `📝 Ghi chú: ${noteData.title || "Không có tiêu đề"}`;
             document.getElementById('note-content').value = noteData.content || "Không có nội dung";
             document.getElementById('note-category').innerText = noteData.category || "Không có";
@@ -234,8 +242,94 @@
             document.getElementById("note-id").value = note_id;
         }
     </script>
+    <script>
+        function checkSession() {
+            fetch('http://localhost/note_management/api/check_session.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.logged_in) {
+                        console.log("✅ Đã đăng nhập! User ID:", data.user_id);
+                        document.getElementById("status").innerText = "Bạn đã đăng nhập!";
+                    } else {
+                        console.log("❌ Chưa đăng nhập!");
+                        document.getElementById("status").innerText = "Bạn chưa đăng nhập!";
+                        // window.location.href = "https://google.com/"; // Chuyển hướng đến trang login
+                    }
+                })
+                .catch(error => console.error("Lỗi khi kiểm tra session:", error));
+        }
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        // Gọi function khi trang load
+        window.onload = checkSession;
+
+    </script>
+<script>
+    let timeout = null;
+
+document.getElementById('searchs').addEventListener('input', function() {
+    clearTimeout(timeout);
+    const keyword = this.value;
+
+    // Đặt độ trễ 300ms trước khi thực hiện tìm kiếm
+    timeout = setTimeout(() => {
+        if (keyword.length > 0) {
+            fetch(`http://localhost/note_management/api/search_note.php?keyword=${encodeURIComponent(keyword)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const resultsDiv = document.getElementById('results');
+                    resultsDiv.innerHTML = ''; // Xóa kết quả trước đó
+
+                    if (Array.isArray(data) && data.length > 0) {
+                        let rowDiv = document.createElement('div');
+                        rowDiv.classList.add('row', 'g-3'); // Bootstrap Grid System
+                        
+                        // Mảng màu Bootstrap badge
+                        const badgeColors = [
+                            "primary", "secondary", "success", "danger", 
+                            "warning", "info", "dark"
+                        ];
+                        
+                        data.forEach(note => {
+                            const colDiv = document.createElement('div');
+                            colDiv.classList.add('col-md-4'); // Mỗi ghi chú chiếm 4 cột trên màn hình trung bình trở lên
+                            
+                            // Chuyển `tags` từ chuỗi hoặc mảng JSON thành mảng
+                            let tagsArray = Array.isArray(note.tags) ? note.tags : note.tags.split(',');
+
+                            // Tạo badge với màu sắc ngẫu nhiên
+                            const tagsHTML = tagsArray.map(tag => {
+                                let randomColor = badgeColors[Math.floor(Math.random() * badgeColors.length)];
+                                return `<span class="badge bg-${randomColor} me-1">${tag.trim()}</span>`;
+                            }).join(' ');
+
+                            colDiv.innerHTML = `
+                                <div class="card h-100 shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${note.title}</h5>
+                                        <p class="card-text">${note.content}</p>
+                                    </div>
+                                    <div class="card-footer text-muted">
+                                        ${tagsHTML}
+                                    </div>
+                                </div>
+                            `;
+                            
+                            rowDiv.appendChild(colDiv);
+                        });
+
+                        resultsDiv.appendChild(rowDiv);
+                    } else {
+                        resultsDiv.innerHTML = '<p class="text-danger">Không tìm thấy ghi chú nào.</p>';
+                    }
+                })
+                .catch(error => console.error('Lỗi:', error));
+        } else {
+            document.getElementById('results').innerHTML = ''; // Xóa kết quả nếu không có từ khóa
+        }
+    }, 300);
+});
+
+</script>
 </body>
 
 </html>

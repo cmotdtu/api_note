@@ -1,12 +1,26 @@
 <?php
 require 'config.php';
 session_start();
+$key = "12345";
+
+function decodeNumber($encoded, $key) {
+    $encoded = str_replace(['-', '_'], ['+', '/'], $encoded); // Chuyển đổi về base64 thông thường
+    $decoded = base64_decode($encoded);
+    if ($decoded === false) return false;
+
+    list($number, $hash) = explode('::', $decoded);
+    $validHash = hash_hmac('sha256', $number, $key, true);
+
+    return hash_equals($validHash, $hash) ? $number : false;
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if note_id and access_password are provided as POST data
     if (isset($_POST['note_id']) && isset($_POST['access_password'])) {
-        $note_id = $_POST['note_id'];
-        $access_password = $_POST['access_password'];
+        $note_id_encode = $_GET['note_id'];
+        $access_password = $_GET['access_password'];
+        $note_id = decodeNumber($note_id_encode,$key);
     } else {
         echo json_encode(['message' => 'Vui lòng cung cấp note_id và access_password.']);
         exit;
@@ -14,8 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Check if note_id and access_password are provided as GET parameters
     if (isset($_GET['note_id']) && isset($_GET['access_password'])) {
-        $note_id = $_GET['note_id'];
+        $note_id_encode = $_GET['note_id'];
         $access_password = $_GET['access_password'];
+        $note_id = decodeNumber($note_id_encode,$key);
     } else {
         echo json_encode(['message' => 'Vui lòng cung cấp note_id và access_password.']);
         exit;

@@ -11,6 +11,21 @@ header('Content-Type: application/json'); // Định dạng JSON cho phản hồ
 //     exit;
 // }
 
+
+$key = "12345";
+
+function decodeNumber($encoded, $key) {
+    $encoded = str_replace(['-', '_'], ['+', '/'], $encoded); // Chuyển đổi về base64 thông thường
+    $decoded = base64_decode($encoded);
+    if ($decoded === false) return false;
+
+    list($number, $hash) = explode('::', $decoded);
+    $validHash = hash_hmac('sha256', $number, $key, true);
+
+    return hash_equals($validHash, $hash) ? $number : false;
+}
+
+
 try {
     // **Xử lý tạo ghi chú mới (POST)**
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -187,7 +202,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT' && isset($_GET['action']) && $_GET['act
     
         // **Xem ghi chú cá nhân (GET)**
         if ($action === 'view_note') {
-            $note_id = $_GET['note_id'] ?? '';
+            $note_id_encode = $_GET['note_id'];
+            $note_id = decodeNumber($note_id_encode,$key);
             $input_password = $_GET['password'] ?? null;
             $user_id = $_SESSION['user_id'] ?? 9; // Mặc định là 9 nếu không có session
     

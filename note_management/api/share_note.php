@@ -2,10 +2,16 @@
 require 'config.php'; // Kết nối tới cơ sở dữ liệu
 require 'send_email.php'; // Nhúng tệp gửi email
 session_start();
-
+$key = "12345";
 // Hàm tạo mật khẩu ngẫu nhiên
 function generateRandomPassword($length = 10) {
     return bin2hex(random_bytes($length / 2));
+}
+
+function encodeNumber($number, $key) {
+    $hash = hash_hmac('sha256', $number, $key, true);
+    $encoded = base64_encode($number . '::' . $hash);
+    return str_replace(['+', '/', '='], ['-', '_', ''], $encoded); // Chuyển đổi base64 thành URL-safe base64
 }
 
 // Kiểm tra người dùng đã đăng nhập chưa
@@ -51,8 +57,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['ac
             ");
             
             if ($stmt->execute([$note_id, $recipient_email, $permission, $access_password, $shared_by])) {
+                $token = encodeNumber($note_id, $key);
                 // Prepare email content
-                $note_link = "http://localhost:3000/note_management/share_note?note_id=" . $note_id;
+                $note_link = "http://localhost:3000/note_management/share_note?note_id=" . $token;
                 $subject = "Một ghi chú đã được chia sẻ với bạn - $email_send";
                 $body = <<<EOD
                 <!DOCTYPE html>
